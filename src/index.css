@@ -14,10 +14,13 @@
   --color-semi-dark-navy: #1f3641;
   --color-silver: #a8bfc9;
   --color-silver-h: #dbe8ed;
+  --color-silver-b: #6b8997;
   --color-light-blue: #31c3bd;
   --color-light-blue-h: #65e9e4;
+  --color-light-blue-b: #118c87;
   --color-light-yellow: #f2b137;
   --color-light-yellow-h: #ffc860;
+  --color-light-yellow-b: #cc8b13;
   /* fonts */
   --font-display: "Outfit", sans-serif;
   --text-heading-l: 2.5rem;
