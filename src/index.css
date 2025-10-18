@@ -21,21 +21,29 @@
   --color-light-yellow: #f2b137;
   --color-light-yellow-h: #ffc860;
   --color-light-yellow-b: #cc8b13;
+  /* shadow */
+  --inset-shadow-md: inset 0 -4px 0 rgba(0, 0, 0, 0.25);
+  --inset-shadow-lg: inset 0 -8px 0 rgba(0, 0, 0, 0.25);
   /* fonts */
   --font-display: "Outfit", sans-serif;
   --text-heading-l: 2.5rem;
   --text-heading-l--letter-spacing: 0.15625rem;
   --text-heading-l--font-weight: 700;
+  --text-heading-l--line-height: 3.125rem;
   --text-heading-m: 1.5rem;
   --text-heading-m--letter-spacing: 0.09375rem;
   --text-heading-m--font-weight: 700;
+  --text-heading-m--line-height: 1.875rem;
   --text-heading-s: 1.25rem;
   --text-heading-s--letter-spacing: 0.078125rem;
   --text-heading-s--font-weight: 700;
+  --text-heading-s--line-height: 1.5625rem;
   --text-heading-xs: 1rem;
   --text-heading-xs--letter-spacing: 0.0625rem;
   --text-heading-xs--font-weight: 700;
+  --text-heading-xs--line-height: 1.25rem;
   --text-body: 0.875rem;
   --text-body--letter-spacing: 0.05rem;
   --text-body--font-weight: 500;
+  --text-body--line-height: 1.125rem;
 }

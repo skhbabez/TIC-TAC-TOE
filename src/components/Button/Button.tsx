@@ -13,7 +13,6 @@ interface SecondaryButtonProps extends ComponentProps<"button"> {
 
 type ButtonProps = PrimaryButtonProps | SecondaryButtonProps;
 
-// add outlines and focus states. replace border with shadow?
 const Button = ({
   variant,
   color,
@@ -22,15 +21,17 @@ const Button = ({
   ...props
 }: ButtonProps) => {
   const variants = {
-    primary: "text-heading-s rounded-[0.9375rem] border-b-8 py-[1.0625rem]",
+    primary:
+      "text-heading-s rounded-[0.9375rem] inset-shadow-lg pt-[1.0625rem] pb-[1.5625rem]",
     secondary:
-      "text-heading-xs rounded-[0.625rem] border-b-4 pb-[0.8125rem] pt-[0.9375rem]",
+      "text-heading-xs rounded-[0.625rem] inset-shadow-md pt-[0.9375rem] pb-[1.0625rem]",
   };
 
   const colors = {
-    yellow: "bg-light-yellow border-light-yellow-b hover:bg-light-yellow-h",
-    blue: "bg-light-blue border-light-blue-b hover:bg-light-blue-h",
-    silver: "bg-silver border-silver-b hover:bg-silver-h",
+    yellow:
+      "bg-light-yellow inset-shadow-light-yellow-b hover:bg-light-yellow-h",
+    blue: "bg-light-blue inset-shadow-light-blue-b hover:bg-light-blue-h",
+    silver: "bg-silver inset-shadow-silver-b hover:bg-silver-h",
   };
 
   return (
@@ -39,7 +40,7 @@ const Button = ({
       className={clsx(
         variants[variant],
         colors[color],
-        "px-4 border-solid transition duration-300 ease-in-out",
+        "font-display px-4 focus-visible:outline-2 transition duration-300 ease-in-out",
         className
       )}
       {...props}
