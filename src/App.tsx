@@ -1,5 +1,11 @@
+import NewGame from "./layouts/NewGame";
+
 function App() {
-  return <></>;
+  return (
+    <main>
+      <NewGame />
+    </main>
+  );
 }
 
 export default App;

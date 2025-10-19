@@ -22,16 +22,16 @@ const Button = ({
 }: ButtonProps) => {
   const variants = {
     primary:
-      "text-heading-s rounded-[0.9375rem] inset-shadow-lg pt-[1.0625rem] pb-[1.5625rem]",
+      "text-heading-xs md:text-heading-s rounded-l inset-shadow-l pt-[1.0625rem] pb-[1.5625rem]",
     secondary:
-      "text-heading-xs rounded-[0.625rem] inset-shadow-md pt-[0.9375rem] pb-[1.0625rem]",
+      "text-heading-xs rounded-m inset-shadow-m pt-[0.9375rem] pb-[1.0625rem]",
   };
 
   const colors = {
     yellow:
-      "bg-light-yellow inset-shadow-light-yellow-b hover:bg-light-yellow-h",
-    blue: "bg-light-blue inset-shadow-light-blue-b hover:bg-light-blue-h",
-    silver: "bg-silver inset-shadow-silver-b hover:bg-silver-h",
+      "bg-light-yellow inset-shadow-light-yellow-b active:bg-light-yellow-h",
+    blue: "bg-light-blue inset-shadow-light-blue-b active:bg-light-blue-h",
+    silver: "bg-silver inset-shadow-silver-b active:bg-silver-h",
   };
 
   return (
@@ -40,7 +40,7 @@ const Button = ({
       className={clsx(
         variants[variant],
         colors[color],
-        "px-4 focus-visible:outline-2 transition duration-300 ease-in-out",
+        "px-4 text-dark-navy focus-visible:outline-2 transition duration-300 ease-in-out",
         className
       )}
       {...props}
