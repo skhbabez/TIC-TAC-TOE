@@ -29,9 +29,9 @@ const Button = ({
 
   const colors = {
     yellow:
-      "bg-light-yellow inset-shadow-light-yellow-b active:bg-light-yellow-h",
-    blue: "bg-light-blue inset-shadow-light-blue-b active:bg-light-blue-h",
-    silver: "bg-silver inset-shadow-silver-b active:bg-silver-h",
+      "bg-light-yellow inset-shadow-light-yellow-b hover:bg-light-yellow-h",
+    blue: "bg-light-blue inset-shadow-light-blue-b hover:bg-light-blue-h",
+    silver: "bg-silver inset-shadow-silver-b hover:bg-silver-h",
   };
 
   return (
