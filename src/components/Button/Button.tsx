@@ -40,7 +40,7 @@ const Button = ({
       className={clsx(
         variants[variant],
         colors[color],
-        "font-display px-4 focus-visible:outline-2 transition duration-300 ease-in-out",
+        "px-4 focus-visible:outline-2 transition duration-300 ease-in-out",
         className
       )}
       {...props}
