@@ -1,4 +1,4 @@
-import NewGame from "./layouts/NewGame";
+import NewGame from "./layouts/NewGame/NewGame";
 
 function App() {
   return (
