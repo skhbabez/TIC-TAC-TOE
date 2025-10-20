@@ -2,10 +2,10 @@ import { useId, type ComponentProps } from "react";
 import Button from "../components/Button/Button";
 
 const NewGame = () => {
-  const toggleId = useId();
+  const radioId = useId();
   const descId = useId();
   return (
-    <section className="flex flex-col items-stretch gap-y-10 max-w-[28.75rem]">
+    <section className="flex flex-col items-stretch gap-y-10 max-w-[28.75rem] w-full">
       <img
         width={71.97}
         height={32}
@@ -14,30 +14,33 @@ const NewGame = () => {
         alt=""
       />
       <div className=" bg-semi-dark-navy text-center text-silver px-6 pt-6 pb-[1.875rem] inset-shadow-l inset-shadow-dark-navy-b rounded-[15px]">
-        <h1 id={toggleId} className="uppercase text-heading-xs">
+        <h1 id={radioId} className="uppercase text-heading-xs">
           Pick player 1's mark
         </h1>
         <fieldset
           className="bg-dark-navy rounded-m  mt-6 px-2 py-[0.5625rem]"
-          aria-labelledby={toggleId}
+          aria-labelledby={radioId}
           aria-describedby={descId}
         >
           <div className="flex">
-            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] text-center">
+            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] text-center has-checked:bg-silver hover:bg-silver/5 cursor-pointer">
               <input
-                className="appearance-none absolute"
+                className="appearance-none absolute peer"
                 type="radio"
                 name="markerselect"
+                aria-label="X" /* test this */
+                defaultChecked
               />
-              <X className="w-8 h-8 text-silver mx-auto" />
+              <X className="w-8 h-8 text-silver mx-auto peer-checked:text-dark-navy" />
             </label>
-            <label className="flex-1 bg-silver rounded-m py-[0.6875rem]">
+            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] has-checked:bg-silver hover:bg-silver/5 cursor-pointer">
               <input
-                className="appearance-none absolute"
+                className="appearance-none absolute peer"
                 type="radio"
                 name="markerselect"
+                aria-label="Y"
               />
-              <O className="w-8 h-8 text-dark-navy mx-auto" />
+              <O className="w-8 h-8 text-silver mx-auto peer-checked:text-dark-navy" />
             </label>
           </div>
         </fieldset>

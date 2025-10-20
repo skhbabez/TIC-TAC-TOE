@@ -73,4 +73,9 @@
   main {
     @apply h-screen flex flex-col items-center justify-center;
   }
+
+  input,
+  button {
+    @apply cursor-pointer;
+  }
 }
