@@ -7,7 +7,7 @@ const NewGame = () => {
   const radioId = useId();
   const descId = useId();
   return (
-    <section className="flex flex-col items-stretch gap-y-10 max-w-[28.75rem] w-full">
+    <section className="flex flex-col items-stretch gap-y-10 max-w-game w-full">
       <img
         width={71.97}
         height={32}

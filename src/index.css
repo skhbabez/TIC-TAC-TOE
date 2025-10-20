@@ -64,6 +64,9 @@
   --text-body--letter-spacing: 0.05rem;
   --text-body--font-weight: 500;
   --text-body--line-height: 1.125rem;
+
+  /* spacing */
+  --spacing-game: 28.75rem;
 }
 
 @layer base {
