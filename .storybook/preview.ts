@@ -1,12 +1,19 @@
 import type { Preview } from "@storybook/react-vite";
 import "../src/index.css";
+import { INITIAL_VIEWPORTS } from "storybook/viewport";
 const preview: Preview = {
   parameters: {
+    viewport: {
+      options: INITIAL_VIEWPORTS,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    initialGlobals: {
+      viewport: { value: "iphone12mini", isRotated: false },
     },
 
     a11y: {

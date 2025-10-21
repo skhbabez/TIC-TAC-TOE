@@ -2,6 +2,8 @@ import Button from "../../components/Button/Button";
 import O from "../../components/icons/O";
 import X from "../../components/icons/X";
 import clsx from "clsx";
+import OutlineX from "../../components/icons/XOutline";
+import OutlineO from "../../components/icons/OutlineO";
 
 const ActiveGame = () => {
   return (
@@ -36,7 +38,7 @@ const ActiveGame = () => {
         {Array(9)
           .fill(0)
           .map(() => (
-            <GameTile marker="x" />
+            <GameTile marker="o" />
           ))}
       </div>
       <footer className="grid grid-flow-col auto-cols-fr gap-5 pt-5 md:pt-[1.1875rem]">
@@ -50,13 +52,23 @@ const ActiveGame = () => {
 
 const GameTile = ({ marker }: { marker?: "x" | "o" }) => {
   const symbols = {
-    x: <X className="w-10 md:w-16 aspect-square text-light-blue" />,
-    o: <O className="w-10 md:w-16 aspect-square text-shadow-light-yellow" />,
+    x: (
+      <>
+        <X className="w-full aspect-square text-light-blue group-hover:hidden" />
+        <OutlineX className="w-full aspect-square text-light-blue hidden group-hover:block" />
+      </>
+    ),
+    o: (
+      <>
+        <O className="w-full aspect-square text-light-yellow group-hover:hidden " />
+        <OutlineO className="w-full aspect-square text-light-yellow hidden group-hover:block" />
+      </>
+    ),
   };
   return (
-    <div className="grid place-items-center rounded-l bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square pb-2">
+    <button className="grid place-items-center rounded-l group bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square px-7 pt-6 pb-8 md:px-[2.375rem] md:py-[2.375rem] md:pb-[2.875rem] ">
       {marker && symbols[marker]}
-    </div>
+    </button>
   );
 };
 
