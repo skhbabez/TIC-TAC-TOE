@@ -4,7 +4,7 @@
   font-family: "Outfit";
   font-style: normal;
   src: local("Outfit"),
-    url("public/fonts/Outfit-VariableFont_wght.ttf") format("truetype");
+    url("/fonts/Outfit-VariableFont_wght.ttf") format("truetype");
 }
 
 @theme {
@@ -64,6 +64,11 @@
   --text-body--letter-spacing: 0.05rem;
   --text-body--font-weight: 500;
   --text-body--line-height: 1.125rem;
+
+  --text-label: 0.75rem;
+  --text-label--letter-spacing: 0.046875rem;
+  --text-label--font-weight: 500;
+  --text-label--line-height: 0.9375rem;
 
   /* spacing */
   --spacing-game: 28.75rem;
