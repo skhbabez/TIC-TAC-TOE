@@ -2,8 +2,15 @@ import { useId } from "react";
 import Button from "../../components/Button/Button";
 import X from "../../components/icons/X";
 import O from "../../components/icons/O";
+import type { Marker } from "../../App";
 
-const NewGame = () => {
+interface NewGameProps {
+  marker: Marker;
+  startGame: (vsCpu: boolean) => void;
+  onMarkerChange: (marker: Marker) => void;
+}
+
+const NewGame = ({ marker, startGame, onMarkerChange }: NewGameProps) => {
   const radioId = useId();
   const descId = useId();
   return (
@@ -31,7 +38,8 @@ const NewGame = () => {
                 type="radio"
                 name="markerselect"
                 aria-label="X" /* test this */
-                defaultChecked
+                checked={marker === "x"}
+                onChange={() => onMarkerChange("x")}
               />
               <X className="w-8 h-8 text-silver mx-auto peer-checked:text-dark-navy" />
             </label>
@@ -41,6 +49,9 @@ const NewGame = () => {
                 type="radio"
                 name="markerselect"
                 aria-label="Y"
+                value={"y"}
+                checked={marker === "o"}
+                onChange={() => onMarkerChange("o")}
               />
               <O className="w-8 h-8 text-silver mx-auto peer-checked:text-dark-navy" />
             </label>
@@ -51,10 +62,20 @@ const NewGame = () => {
         </p>
       </div>
       <div className="flex flex-col gap-y-5">
-        <Button className="uppercase" variant="primary" color="yellow">
+        <Button
+          onClick={() => startGame(true)}
+          className="uppercase"
+          variant="primary"
+          color="yellow"
+        >
           New Game (vs CPU)
         </Button>
-        <Button className="uppercase" variant="primary" color="blue">
+        <Button
+          onClick={() => startGame(false)}
+          className="uppercase"
+          variant="primary"
+          color="blue"
+        >
           New Game (vs player)
         </Button>
       </div>
