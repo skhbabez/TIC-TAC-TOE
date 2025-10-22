@@ -10,6 +10,8 @@
 @theme {
   /* colors */
   --color-*: initial;
+  --color-black: #000000;
+
   --color-dark-navy: #1a2a33;
   --color-dark-navy-b: #10212a;
   --color-semi-dark-navy: #1f3641;
