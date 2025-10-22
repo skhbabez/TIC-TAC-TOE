@@ -22,6 +22,11 @@ interface MarkerAction {
 
 type GameAction = StartAction | MarkerAction;
 
+const defaultGameState: GameState = {
+  status: "idle",
+  vsCpu: true,
+  marker: "x",
+};
 const reducer = (gameState: GameState, action: GameAction): GameState => {
   switch (action.type) {
     case "START":
@@ -41,11 +46,7 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
 };
 
 function App() {
-  const [gameState, dispatch] = useReducer(reducer, {
-    status: "idle",
-    vsCpu: true,
-    marker: "x",
-  });
+  const [gameState, dispatch] = useReducer(reducer, defaultGameState);
   return (
     <main>
       {gameState.status === "idle" ? (
