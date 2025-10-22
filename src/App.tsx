@@ -57,7 +57,7 @@ function App() {
           startGame={(vsCpu) => dispatch({ type: "START", vsCpu: vsCpu })}
         />
       ) : (
-        <ActiveGame />
+        <ActiveGame marker={gameState.marker} vsCpu={gameState.vsCpu} />
       )}
     </main>
   );

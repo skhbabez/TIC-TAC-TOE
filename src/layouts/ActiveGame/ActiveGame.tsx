@@ -4,8 +4,16 @@ import X from "../../components/icons/X";
 import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
+import type { Marker } from "../../App";
 
-const ActiveGame = () => {
+interface ActiveGameProps {
+  marker: Marker;
+  vsCpu: boolean;
+}
+
+const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
+  const opponent = vsCpu ? "cpu" : "p2";
+  const player = vsCpu ? "you" : "p1";
   return (
     <div className="max-w-game w-full">
       <header className="flex justify-between">
@@ -42,9 +50,17 @@ const ActiveGame = () => {
           ))}
       </div>
       <footer className="grid grid-flow-col auto-cols-fr gap-5 pt-5 md:pt-[1.1875rem]">
-        <ScoreTile label="x (you)" score={14} color="bg-light-blue" />
+        <ScoreTile
+          label={`x (${marker === "x" ? player : opponent})`}
+          score={14}
+          color="bg-light-blue"
+        />
         <ScoreTile label="ties" score={32} color="bg-silver" />
-        <ScoreTile label="x (p2)" score={14} color="bg-light-yellow" />
+        <ScoreTile
+          label={`o (${marker === "o" ? player : opponent})`}
+          score={14}
+          color="bg-light-yellow"
+        />
       </footer>
     </div>
   );
