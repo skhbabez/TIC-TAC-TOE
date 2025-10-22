@@ -1,10 +1,33 @@
 import type { Preview } from "@storybook/react-vite";
 import "../src/index.css";
-import { INITIAL_VIEWPORTS } from "storybook/viewport";
+
+const viewports = {
+  desktop: {
+    name: "desktop",
+    styles: {
+      width: "1440px",
+      height: "900px",
+    },
+  },
+  tablet: {
+    name: "tablet",
+    styles: {
+      width: "768px",
+      height: "1024px",
+    },
+  },
+  mobile: {
+    name: "mobile",
+    styles: {
+      width: "375px",
+      height: "667px",
+    },
+  },
+};
 const preview: Preview = {
   parameters: {
     viewport: {
-      options: INITIAL_VIEWPORTS,
+      options: viewports,
     },
     controls: {
       matchers: {
@@ -13,7 +36,7 @@ const preview: Preview = {
       },
     },
     initialGlobals: {
-      viewport: { value: "iphone12mini", isRotated: false },
+      viewport: { value: "desktop" },
     },
 
     a11y: {

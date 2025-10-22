@@ -4,6 +4,15 @@ import ActiveGame from "./ActiveGame";
 
 const meta = {
   component: ActiveGame,
+  argTypes: {
+    marker: {
+      control: { type: "radio" },
+      options: ["x", "o"],
+    },
+    vsCpu: {
+      control: { type: "boolean" },
+    },
+  },
   decorators: [
     (Story) => (
       <main>
@@ -18,5 +27,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    marker: "x",
+    vsCpu: true,
+  },
 };
