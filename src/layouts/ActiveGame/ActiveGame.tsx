@@ -5,6 +5,8 @@ import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
 import type { Marker } from "../../App";
+import Dialog from "../../components/Dialog/Dialog";
+import { useRef } from "react";
 
 interface ActiveGameProps {
   marker: Marker;
@@ -12,8 +14,11 @@ interface ActiveGameProps {
 }
 
 const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
+  const restartRef = useRef<HTMLDialogElement>(null);
+
   const opponent = vsCpu ? "cpu" : "p2";
   const player = vsCpu ? "you" : "p1";
+
   return (
     <div className="max-w-game w-full">
       <header className="flex justify-between">
@@ -25,7 +30,7 @@ const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
           alt=""
         />
         <div className="bg-semi-dark-navy rounded-m md:px-[1.875rem] px-[0.9375rem] md:pt-[0.8125rem] pt-[0.5625rem] md:pb-[1.1875rem] pb-[0.8125rem] inset-shadow-m inset-shadow-dark-navy-b">
-          <span className="md:text-heading-xs text-body text-silver uppercase flex gap-[0.8125rem] ">
+          <span className="md:text-heading-xs text-body text-silver flex gap-[0.8125rem] ">
             <X className="w-4 h-4 md:w-5 md:h-5 text-silver inline-block" />
             Turn
           </span>
@@ -34,6 +39,7 @@ const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
           variant="secondary"
           color="silver"
           className="max-[768px]:p-[0.769375rem]"
+          onClick={() => restartRef.current?.showModal()}
         >
           <img
             className="w-[0.96125rem] h-[0.96125rem] md:w-[1.25rem] md:h-[1.25rem]"
@@ -62,6 +68,25 @@ const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
           color="bg-light-yellow"
         />
       </footer>
+      <Dialog ref={restartRef}>
+        <div className="mt-[3.8125rem] md:mt-[4.1875rem] mx-auto w-fit">
+          <h1 className="text-center text-heading-m md:text-heading-l text-silver">
+            restart game?
+          </h1>
+          <div className="flex gap-4 mt-6 md:mt-[1.9375rem] justify-center">
+            <Button
+              variant="secondary"
+              color="silver"
+              onClick={() => restartRef.current?.close()}
+            >
+              no, cancel
+            </Button>
+            <Button variant="secondary" color="yellow">
+              yes, restart
+            </Button>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };
@@ -105,7 +130,7 @@ const ScoreTile = ({
       )}
     >
       <label className="contents">
-        <span className="uppercase text-label md:text-body">{label}</span>
+        <span className=" text-label md:text-body">{label}</span>
         <output className="text-heading-s md:text-heading-m">{score}</output>
       </label>
     </div>

@@ -77,9 +77,16 @@
 }
 
 @layer base {
-  body {
-    @apply font-display bg-dark-navy;
+  *,
+  ::before,
+  ::after {
+    @apply uppercase;
   }
+
+  body {
+    @apply font-display bg-dark-navy uppercase;
+  }
+
   main {
     @apply h-screen flex flex-col items-center justify-center;
   }

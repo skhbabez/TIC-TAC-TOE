@@ -23,7 +23,7 @@ const NewGame = ({ marker, startGame, onMarkerChange }: NewGameProps) => {
         alt=""
       />
       <div className=" bg-semi-dark-navy text-center text-silver px-6 pt-6 pb-[1.875rem] inset-shadow-l inset-shadow-dark-navy-b rounded-[15px]">
-        <h1 id={radioId} className="uppercase text-heading-xs">
+        <h1 id={radioId} className="text-heading-xs">
           Pick player 1's mark
         </h1>
         <fieldset
@@ -57,25 +57,19 @@ const NewGame = ({ marker, startGame, onMarkerChange }: NewGameProps) => {
             </label>
           </div>
         </fieldset>
-        <p id={descId} className="uppercase text-body mt-[1.0625rem]">
+        <p id={descId} className="text-body mt-[1.0625rem]">
           Remember: X goes first
         </p>
       </div>
       <div className="flex flex-col gap-y-5">
         <Button
           onClick={() => startGame(true)}
-          className="uppercase"
           variant="primary"
           color="yellow"
         >
           New Game (vs CPU)
         </Button>
-        <Button
-          onClick={() => startGame(false)}
-          className="uppercase"
-          variant="primary"
-          color="blue"
-        >
+        <Button onClick={() => startGame(false)} variant="primary" color="blue">
           New Game (vs player)
         </Button>
       </div>
