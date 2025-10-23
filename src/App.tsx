@@ -33,7 +33,16 @@ interface MarkerAction {
   marker: Marker;
 }
 
-type GameAction = StartAction | MarkerAction;
+interface TickAction {
+  type: "TICK";
+  id: number;
+}
+
+interface RestartAction {
+  type: "RESTART";
+}
+
+type GameAction = StartAction | MarkerAction | TickAction | RestartAction;
 
 const defaultGameState: GameState = {
   status: "idle",
@@ -60,6 +69,29 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
         ...gameState,
         marker: action.marker,
       };
+    case "TICK": {
+      const tickedId = action.id;
+      const turn = gameState.turn == "x" ? "o" : "x";
+      const tiles = [...gameState.tiles];
+      const idx = tiles.findIndex(({ id }) => id == tickedId);
+      tiles[idx]["marker"] = gameState.turn;
+      return {
+        ...gameState,
+        tiles,
+        turn,
+      };
+    }
+    case "RESTART":
+      return {
+        ...gameState,
+        turn: gameState.marker,
+        score: {
+          playerX: 0,
+          ties: 0,
+          playerO: 0,
+        },
+        tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
+      };
     default:
       return gameState;
   }
@@ -84,6 +116,8 @@ function App() {
           tiles={gameState.tiles}
           turn={gameState.turn}
           score={gameState.score}
+          onTick={(id) => dispatch({ type: "TICK", id })}
+          restart={() => dispatch({ type: "RESTART" })}
         />
       )}
     </main>

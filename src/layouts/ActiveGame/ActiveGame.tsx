@@ -14,9 +14,19 @@ interface ActiveGameProps {
   tiles: Tile[];
   turn: Marker;
   score: Score;
+  onTick: (id: number) => void;
+  restart: () => void;
 }
 
-const ActiveGame = ({ marker, vsCpu, tiles, turn, score }: ActiveGameProps) => {
+const ActiveGame = ({
+  marker,
+  vsCpu,
+  tiles,
+  turn,
+  score,
+  onTick,
+  restart,
+}: ActiveGameProps) => {
   const restartRef = useRef<HTMLDialogElement>(null);
 
   const opponent = vsCpu ? "cpu" : "p2";
@@ -57,7 +67,7 @@ const ActiveGame = ({ marker, vsCpu, tiles, turn, score }: ActiveGameProps) => {
       </header>
       <div className="grid grid-cols-3 gap-5 pt-16 md:pt-[1.1875rem]">
         {tiles.map(({ id, marker }) => (
-          <GameTile key={id} marker={marker} />
+          <GameTile key={id} marker={marker} onTick={() => onTick(id)} />
         ))}
       </div>
       <footer className="grid grid-flow-col auto-cols-fr gap-5 pt-5 md:pt-[1.1875rem]">
@@ -86,7 +96,14 @@ const ActiveGame = ({ marker, vsCpu, tiles, turn, score }: ActiveGameProps) => {
             >
               no, cancel
             </Button>
-            <Button variant="secondary" color="yellow">
+            <Button
+              onClick={() => {
+                restart();
+                restartRef.current?.close();
+              }}
+              variant="secondary"
+              color="yellow"
+            >
               yes, restart
             </Button>
           </div>
@@ -96,7 +113,13 @@ const ActiveGame = ({ marker, vsCpu, tiles, turn, score }: ActiveGameProps) => {
   );
 };
 
-const GameTile = ({ marker }: { marker: "x" | "o" | null }) => {
+const GameTile = ({
+  marker,
+  onTick,
+}: {
+  marker: "x" | "o" | null;
+  onTick: () => void;
+}) => {
   const symbols = {
     x: (
       <>
@@ -112,7 +135,10 @@ const GameTile = ({ marker }: { marker: "x" | "o" | null }) => {
     ),
   };
   return (
-    <button className="grid place-items-center rounded-l group bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square px-7 pt-6 pb-8 md:px-[2.375rem] md:py-[2.375rem] md:pb-[2.875rem] ">
+    <button
+      onClick={onTick}
+      className="grid place-items-center rounded-l group bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square px-7 pt-6 pb-8 md:px-[2.375rem] md:py-[2.375rem] md:pb-[2.875rem] "
+    >
       {marker && symbols[marker]}
     </button>
   );

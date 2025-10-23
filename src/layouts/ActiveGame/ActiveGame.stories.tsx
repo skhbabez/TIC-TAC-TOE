@@ -28,5 +28,7 @@ export const Default: Story = {
       ties: 0,
       playerO: 0,
     },
+    onTick: () => {},
+    restart: () => {},
   },
 };
