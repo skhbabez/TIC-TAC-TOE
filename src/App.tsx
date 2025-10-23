@@ -171,7 +171,7 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
 
 function App() {
   const [gameState, dispatch] = useReducer(reducer, defaultGameState);
-  const [showRestart, setShowRestart] = useState(false);
+  const [showRestart, setShowRestart] = useState(false); // maybe move this down to activeGame?
   return (
     <main>
       {gameState.status === "idle" ? (
@@ -193,6 +193,7 @@ function App() {
           onRestart={() => setShowRestart(true)}
         />
       )}
+      {/* rethink margin top strategy. Maybe add margin bottom too? Or change to padding? */}
       <Dialog show={showRestart}>
         <div className="mt-[3.8125rem] md:mt-[4.1875rem] mx-auto w-fit">
           <h1 className="text-center text-heading-m md:text-heading-l text-silver">

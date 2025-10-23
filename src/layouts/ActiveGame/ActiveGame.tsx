@@ -25,8 +25,6 @@ const ActiveGame = ({
   onTick,
   onRestart,
 }: ActiveGameProps) => {
-  // const restartRef = useRef<HTMLDialogElement>(null);
-
   const opponent = vsCpu ? "cpu" : "p2";
   const player = vsCpu ? "you" : "p1";
 
