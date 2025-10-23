@@ -19,6 +19,7 @@ export interface Score {
 interface GameState {
   status: "running" | "idle" | "finished";
   result: "x" | "o" | "tie" | null;
+  round: number;
   marker: Marker;
   vsCpu: boolean;
   tiles: Tile[];
@@ -45,14 +46,33 @@ interface RestartAction {
   type: "RESTART";
 }
 
-type GameAction = StartAction | MarkerAction | TickAction | RestartAction;
+interface QuitAction {
+  type: "QUIT";
+}
+
+interface NextRoundAction {
+  type: "NEXTROUND";
+}
+
+type GameAction =
+  | StartAction
+  | MarkerAction
+  | TickAction
+  | RestartAction
+  | QuitAction
+  | NextRoundAction;
+
+const createTiles = () => {
+  return Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null }));
+};
 
 const defaultGameState: GameState = {
   status: "idle",
   result: null,
+  round: 0,
   vsCpu: true,
   marker: "x",
-  tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
+  tiles: createTiles(),
   turn: "x",
   score: {
     playerX: 0,
@@ -60,6 +80,7 @@ const defaultGameState: GameState = {
     playerO: 0,
   },
 };
+
 const reducer = (gameState: GameState, action: GameAction): GameState => {
   switch (action.type) {
     case "START":
@@ -101,8 +122,48 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
           ties: 0,
           playerO: 0,
         },
-        tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
+        tiles: createTiles(),
       };
+    case "QUIT":
+      return {
+        status: "idle",
+        round: 0,
+        result: null,
+        vsCpu: true,
+        marker: "x",
+        tiles: createTiles(),
+        turn: "x",
+        score: {
+          playerX: 0,
+          ties: 0,
+          playerO: 0,
+        },
+      };
+    case "NEXTROUND": {
+      const nextRound = gameState.round + 1;
+      return {
+        ...gameState,
+        status: "running",
+        result: null,
+        tiles: createTiles(),
+        round: nextRound,
+        turn: nextRound % 2 == 0 ? "x" : "o",
+        score: {
+          playerX:
+            gameState.result == "x"
+              ? gameState.score.playerX + 1
+              : gameState.score.playerX,
+          ties:
+            gameState.result == "tie"
+              ? gameState.score.ties + 1
+              : gameState.score.ties,
+          playerO:
+            gameState.result == "o"
+              ? gameState.score.playerO + 1
+              : gameState.score.playerO,
+        },
+      };
+    }
     default:
       return gameState;
   }
@@ -111,8 +172,6 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
 function App() {
   const [gameState, dispatch] = useReducer(reducer, defaultGameState);
   const [showRestart, setShowRestart] = useState(false);
-  // const restartRef = useRef<HTMLDialogElement>(null);
-  // const tieRef = useRef<HTMLDialogElement>(null);
   return (
     <main>
       {gameState.status === "idle" ? (
@@ -170,13 +229,13 @@ function App() {
             <Button
               variant="secondary"
               color="silver"
-              onClick={() => console.log("quit")}
+              onClick={() => dispatch({ type: "QUIT" })}
             >
               quit
             </Button>
             <Button
               onClick={() => {
-                console.log("next round");
+                dispatch({ type: "NEXTROUND" });
               }}
               variant="secondary"
               color="yellow"
@@ -191,30 +250,3 @@ function App() {
 }
 
 export default App;
-
-//  <Dialog ref={restartRef}>
-//         <div className="mt-[3.8125rem] md:mt-[4.1875rem] mx-auto w-fit">
-//           <h1 className="text-center text-heading-m md:text-heading-l text-silver">
-//             restart game?
-//           </h1>
-//           <div className="flex gap-4 mt-6 md:mt-[1.9375rem] justify-center">
-//             <Button
-//               variant="secondary"
-//               color="silver"
-//               onClick={() => restartRef.current?.close()}
-//             >
-//               no, cancel
-//             </Button>
-//             <Button
-//               onClick={() => {
-//                 restart();
-//                 restartRef.current?.close();
-//               }}
-//               variant="secondary"
-//               color="yellow"
-//             >
-//               yes, restart
-//             </Button>
-//           </div>
-//         </div>
-//       </Dialog>
