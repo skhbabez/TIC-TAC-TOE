@@ -4,16 +4,17 @@ import X from "../../components/icons/X";
 import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
-import type { Marker } from "../../App";
+import type { Marker, Tile } from "../../App";
 import Dialog from "../../components/Dialog/Dialog";
 import { useRef } from "react";
 
 interface ActiveGameProps {
   marker: Marker;
   vsCpu: boolean;
+  tiles: Tile[];
 }
 
-const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
+const ActiveGame = ({ marker, vsCpu, tiles }: ActiveGameProps) => {
   const restartRef = useRef<HTMLDialogElement>(null);
 
   const opponent = vsCpu ? "cpu" : "p2";
@@ -49,11 +50,9 @@ const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
         </Button>
       </header>
       <div className="grid grid-cols-3 gap-5 pt-16 md:pt-[1.1875rem]">
-        {Array(9)
-          .fill(0)
-          .map(() => (
-            <GameTile marker="o" />
-          ))}
+        {tiles.map(({ id, marker }) => (
+          <GameTile key={id} marker={marker} />
+        ))}
       </div>
       <footer className="grid grid-flow-col auto-cols-fr gap-5 pt-5 md:pt-[1.1875rem]">
         <ScoreTile
@@ -91,7 +90,7 @@ const ActiveGame = ({ marker, vsCpu }: ActiveGameProps) => {
   );
 };
 
-const GameTile = ({ marker }: { marker?: "x" | "o" }) => {
+const GameTile = ({ marker }: { marker: "x" | "o" | null }) => {
   const symbols = {
     x: (
       <>

@@ -4,10 +4,16 @@ import ActiveGame from "./layouts/ActiveGame/ActiveGame";
 
 export type Marker = "x" | "o";
 
+export interface Tile {
+  id: number;
+  marker: Marker | null;
+}
+
 interface GameState {
   status: "running" | "idle";
   marker: Marker;
   vsCpu: boolean;
+  tiles: Tile[];
 }
 
 interface StartAction {
@@ -26,6 +32,7 @@ const defaultGameState: GameState = {
   status: "idle",
   vsCpu: true,
   marker: "x",
+  tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
 };
 const reducer = (gameState: GameState, action: GameAction): GameState => {
   switch (action.type) {
@@ -58,7 +65,11 @@ function App() {
           startGame={(vsCpu) => dispatch({ type: "START", vsCpu: vsCpu })}
         />
       ) : (
-        <ActiveGame marker={gameState.marker} vsCpu={gameState.vsCpu} />
+        <ActiveGame
+          marker={gameState.marker}
+          vsCpu={gameState.vsCpu}
+          tiles={gameState.tiles}
+        />
       )}
     </main>
   );
