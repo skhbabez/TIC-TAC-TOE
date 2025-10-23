@@ -8,12 +8,19 @@ export interface Tile {
   id: number;
   marker: Marker | null;
 }
+export interface Score {
+  playerX: number;
+  ties: number;
+  playerO: number;
+}
 
 interface GameState {
   status: "running" | "idle";
   marker: Marker;
   vsCpu: boolean;
   tiles: Tile[];
+  turn: Marker;
+  score: Score;
 }
 
 interface StartAction {
@@ -33,6 +40,12 @@ const defaultGameState: GameState = {
   vsCpu: true,
   marker: "x",
   tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
+  turn: "x",
+  score: {
+    playerX: 0,
+    ties: 0,
+    playerO: 0,
+  },
 };
 const reducer = (gameState: GameState, action: GameAction): GameState => {
   switch (action.type) {
@@ -69,6 +82,8 @@ function App() {
           marker={gameState.marker}
           vsCpu={gameState.vsCpu}
           tiles={gameState.tiles}
+          turn={gameState.turn}
+          score={gameState.score}
         />
       )}
     </main>

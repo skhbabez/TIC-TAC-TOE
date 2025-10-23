@@ -4,7 +4,7 @@ import X from "../../components/icons/X";
 import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
-import type { Marker, Tile } from "../../App";
+import type { Marker, Score, Tile } from "../../App";
 import Dialog from "../../components/Dialog/Dialog";
 import { useRef } from "react";
 
@@ -12,9 +12,11 @@ interface ActiveGameProps {
   marker: Marker;
   vsCpu: boolean;
   tiles: Tile[];
+  turn: Marker;
+  score: Score;
 }
 
-const ActiveGame = ({ marker, vsCpu, tiles }: ActiveGameProps) => {
+const ActiveGame = ({ marker, vsCpu, tiles, turn, score }: ActiveGameProps) => {
   const restartRef = useRef<HTMLDialogElement>(null);
 
   const opponent = vsCpu ? "cpu" : "p2";
@@ -32,7 +34,11 @@ const ActiveGame = ({ marker, vsCpu, tiles }: ActiveGameProps) => {
         />
         <div className="bg-semi-dark-navy rounded-m md:px-[1.875rem] px-[0.9375rem] md:pt-[0.8125rem] pt-[0.5625rem] md:pb-[1.1875rem] pb-[0.8125rem] inset-shadow-m inset-shadow-dark-navy-b">
           <span className="md:text-heading-xs text-body text-silver flex gap-[0.8125rem] ">
-            <X className="w-4 h-4 md:w-5 md:h-5 text-silver inline-block" />
+            {turn == "x" ? (
+              <X className="w-4 h-4 md:w-5 md:h-5 text-silver inline-block" />
+            ) : (
+              <O className="w-4 h-4 md:w-5 md:h-5 text-silver inline-block" />
+            )}
             Turn
           </span>
         </div>
@@ -57,13 +63,13 @@ const ActiveGame = ({ marker, vsCpu, tiles }: ActiveGameProps) => {
       <footer className="grid grid-flow-col auto-cols-fr gap-5 pt-5 md:pt-[1.1875rem]">
         <ScoreTile
           label={`x (${marker === "x" ? player : opponent})`}
-          score={14}
+          score={score.playerX}
           color="bg-light-blue"
         />
-        <ScoreTile label="ties" score={32} color="bg-silver" />
+        <ScoreTile label="ties" score={score.ties} color="bg-silver" />
         <ScoreTile
           label={`o (${marker === "o" ? player : opponent})`}
-          score={14}
+          score={score.playerO}
           color="bg-light-yellow"
         />
       </footer>

@@ -4,15 +4,6 @@ import ActiveGame from "./ActiveGame";
 
 const meta = {
   component: ActiveGame,
-  argTypes: {
-    marker: {
-      control: { type: "radio" },
-      options: ["x", "o"],
-    },
-    vsCpu: {
-      control: { type: "boolean" },
-    },
-  },
   decorators: [
     (Story) => (
       <main>
@@ -31,5 +22,11 @@ export const Default: Story = {
     marker: "x",
     vsCpu: true,
     tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
+    turn: "x",
+    score: {
+      playerX: 0,
+      ties: 0,
+      playerO: 0,
+    },
   },
 };
