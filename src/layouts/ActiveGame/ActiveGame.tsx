@@ -5,8 +5,6 @@ import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
 import type { Marker, Score, Tile } from "../../App";
-import Dialog from "../../components/Dialog/Dialog";
-import { useRef } from "react";
 
 interface ActiveGameProps {
   marker: Marker;
@@ -15,7 +13,7 @@ interface ActiveGameProps {
   turn: Marker;
   score: Score;
   onTick: (id: number) => void;
-  restart: () => void;
+  onRestart: () => void;
 }
 
 const ActiveGame = ({
@@ -25,9 +23,9 @@ const ActiveGame = ({
   turn,
   score,
   onTick,
-  restart,
+  onRestart,
 }: ActiveGameProps) => {
-  const restartRef = useRef<HTMLDialogElement>(null);
+  // const restartRef = useRef<HTMLDialogElement>(null);
 
   const opponent = vsCpu ? "cpu" : "p2";
   const player = vsCpu ? "you" : "p1";
@@ -56,7 +54,7 @@ const ActiveGame = ({
           variant="secondary"
           color="silver"
           className="max-[768px]:p-[0.769375rem]"
-          onClick={() => restartRef.current?.showModal()}
+          onClick={onRestart}
         >
           <img
             className="w-[0.96125rem] h-[0.96125rem] md:w-[1.25rem] md:h-[1.25rem]"
@@ -83,32 +81,6 @@ const ActiveGame = ({
           color="bg-light-yellow"
         />
       </footer>
-      <Dialog ref={restartRef}>
-        <div className="mt-[3.8125rem] md:mt-[4.1875rem] mx-auto w-fit">
-          <h1 className="text-center text-heading-m md:text-heading-l text-silver">
-            restart game?
-          </h1>
-          <div className="flex gap-4 mt-6 md:mt-[1.9375rem] justify-center">
-            <Button
-              variant="secondary"
-              color="silver"
-              onClick={() => restartRef.current?.close()}
-            >
-              no, cancel
-            </Button>
-            <Button
-              onClick={() => {
-                restart();
-                restartRef.current?.close();
-              }}
-              variant="secondary"
-              color="yellow"
-            >
-              yes, restart
-            </Button>
-          </div>
-        </div>
-      </Dialog>
     </div>
   );
 };
