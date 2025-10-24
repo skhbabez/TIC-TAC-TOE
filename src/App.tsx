@@ -84,6 +84,54 @@ const defaultGameState: GameState = {
   },
 };
 
+const hasWon = (tiles: Tile[]) => {
+  for (let i = 0; i < 3; i++) {
+    // columns
+    if (
+      tiles[i].marker &&
+      tiles[i].marker === tiles[i + 3].marker &&
+      tiles[i + 3].marker === tiles[i + 6].marker
+    ) {
+      console.log("test");
+
+      return tiles[i].marker;
+    }
+
+    // rows
+    if (
+      tiles[i * 3].marker &&
+      tiles[i * 3].marker === tiles[i * 3 + 1].marker &&
+      tiles[i * 3 + 1].marker === tiles[i * 3 + 2].marker
+    ) {
+      return tiles[i * 3].marker;
+    }
+  }
+
+  // diagonal
+  if (
+    tiles[0].marker &&
+    tiles[0].marker === tiles[4].marker &&
+    tiles[4].marker === tiles[8].marker
+  ) {
+    return tiles[4].marker;
+  }
+
+  if (
+    tiles[2].marker &&
+    tiles[2].marker === tiles[4].marker &&
+    tiles[4].marker === tiles[6].marker
+  ) {
+    return tiles[4].marker;
+  }
+
+  // tie
+  if (tiles.filter((tile) => !tile.marker).length === 0) {
+    return "tie";
+  }
+  // undecided
+  return null;
+};
+
 const reducer = (gameState: GameState, action: GameAction): GameState => {
   switch (action.type) {
     case "START":
@@ -107,10 +155,9 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
       const tiles = gameState.tiles.map((tile) => ({ ...tile }));
       const turn = gameState.turn === "x" ? "o" : "x";
       tiles[idx].marker = gameState.turn;
-      const isTie = tiles.filter((tile) => tile.marker).length >= 9;
       return {
         ...gameState,
-        result: isTie ? "tie" : gameState.result,
+        result: hasWon(tiles),
         tiles,
         turn,
       };
@@ -174,6 +221,7 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
 function App() {
   const [gameState, dispatch] = useReducer(reducer, defaultGameState);
   const [showRestart, setShowRestart] = useState(false);
+
   const dialogText = () => {
     if (gameState.vsCpu) {
       if (gameState.marker === gameState.result) {
