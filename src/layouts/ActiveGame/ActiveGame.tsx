@@ -53,6 +53,7 @@ const ActiveGame = ({
           color="silver"
           className="max-[768px]:p-[0.769375rem]"
           onClick={onRestart}
+          aria-haspopup="dialog"
         >
           <img
             className="w-[0.96125rem] h-[0.96125rem] md:w-[1.25rem] md:h-[1.25rem]"

@@ -3,6 +3,9 @@ import NewGame from "./layouts/NewGame/NewGame";
 import ActiveGame from "./layouts/ActiveGame/ActiveGame";
 import Dialog from "./components/Dialog/Dialog";
 import Button from "./components/Button/Button";
+import X from "./components/icons/X";
+import O from "./components/icons/O";
+import clsx from "clsx";
 
 export type Marker = "x" | "o";
 
@@ -17,7 +20,7 @@ export interface Score {
 }
 
 interface GameState {
-  status: "running" | "idle" | "finished";
+  status: "running" | "idle";
   result: "x" | "o" | "tie" | null;
   round: number;
   marker: Marker;
@@ -107,7 +110,6 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
       const isTie = tiles.filter((tile) => tile.marker).length >= 9;
       return {
         ...gameState,
-        status: isTie ? "finished" : gameState.status,
         result: isTie ? "tie" : gameState.result,
         tiles,
         turn,
@@ -171,7 +173,23 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
 
 function App() {
   const [gameState, dispatch] = useReducer(reducer, defaultGameState);
-  const [showRestart, setShowRestart] = useState(false); // maybe move this down to activeGame?
+  const [showRestart, setShowRestart] = useState(false);
+  const dialogText = () => {
+    if (gameState.vsCpu) {
+      if (gameState.marker === gameState.result) {
+        return "you won!";
+      } else {
+        return "oh no, you lost…";
+      }
+    } else {
+      if (gameState.result === "x") {
+        return "player 1 wins!";
+      } else {
+        return "player 2 wins!";
+      }
+    }
+  };
+
   return (
     <main>
       {gameState.status === "idle" ? (
@@ -190,12 +208,14 @@ function App() {
           turn={gameState.turn}
           score={gameState.score}
           onTick={(id) => dispatch({ type: "TICK", id })}
-          onRestart={() => setShowRestart(true)}
+          onRestart={() => {
+            setShowRestart(true);
+          }}
         />
       )}
-      {/* rethink margin top strategy. Maybe add margin bottom too? Or change to padding? */}
+
       <Dialog show={showRestart}>
-        <div className="mt-[3.8125rem] md:mt-[4.1875rem] mx-auto w-fit">
+        <div className="my-[3.8125rem] md:mt-[4.1875rem] md:mb-[4.125rem] mx-auto w-fit">
           <h1 className="text-center text-heading-m md:text-heading-l text-silver">
             restart game?
           </h1>
@@ -222,10 +242,56 @@ function App() {
       </Dialog>
 
       <Dialog show={gameState.result === "tie"}>
-        <div className="mt-[3.8125rem] md:mt-[4.1875rem] mx-auto w-fit">
+        <div className="my-[3.8125rem] md:mt-[4.1875rem] md:mb-[4.125rem] mx-auto w-fit">
           <h1 className="text-center text-heading-m md:text-heading-l text-silver">
             round tied
           </h1>
+          <div className="flex gap-4 mt-6 md:mt-[1.9375rem] justify-center">
+            <Button
+              variant="secondary"
+              color="silver"
+              onClick={() => dispatch({ type: "QUIT" })}
+            >
+              quit
+            </Button>
+            <Button
+              onClick={() => {
+                dispatch({ type: "NEXTROUND" });
+              }}
+              variant="secondary"
+              color="yellow"
+            >
+              next round
+            </Button>
+          </div>
+        </div>
+      </Dialog>
+
+      <Dialog show={gameState.result === "x" || gameState.result === "o"}>
+        <div className="text-center mb-12 mt-10 md:my-[2.8125rem] mx-auto w-fit">
+          <hgroup>
+            <p className="text-body md:text-heading-xs text-silver">
+              {dialogText()}
+            </p>
+            <h1 className="text-silver flex items-center justify-center gap-[0.5625rem] md:gap-6 mt-4 mb-6">
+              {gameState.result === "x" ? (
+                <X className="w-7 aspect-square md:w-16 text-light-blue" />
+              ) : (
+                <O className="w-7 aspect-square md:w-16 text-light-yellow" />
+              )}
+              <span
+                className={clsx(
+                  {
+                    "text-light-blue": gameState.result === "x",
+                    "text-light-yellow": gameState.result === "o",
+                  },
+                  "text-heading-m md:text-heading-l"
+                )}
+              >
+                takes the round
+              </span>
+            </h1>
+          </hgroup>
           <div className="flex gap-4 mt-6 md:mt-[1.9375rem] justify-center">
             <Button
               variant="secondary"
