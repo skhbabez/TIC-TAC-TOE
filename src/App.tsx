@@ -219,8 +219,20 @@ const cpuTurn = (tiles: (Marker | null)[]) => {
   return emptyIdx[choice];
 };
 
+const save = (state: GameState) => {
+  return window.localStorage.setItem("gamestate", JSON.stringify(state));
+};
+
+const init = () => {
+  const localState = localStorage.getItem("gamestate");
+  if (localState) {
+    return JSON.parse(localState);
+  }
+  return defaultGameState;
+};
+
 function App() {
-  const [gameState, dispatch] = useReducer(reducer, defaultGameState);
+  const [gameState, dispatch] = useReducer(reducer, init());
   const [showRestart, setShowRestart] = useState(false);
 
   useEffect(() => {
@@ -230,6 +242,10 @@ function App() {
         dispatch({ type: "TICK", idx: cpuTurn(gameState.tiles) });
       }
     }
+  }, [gameState]);
+
+  useEffect(() => {
+    save(gameState);
   }, [gameState]);
 
   const dialogText = () => {
