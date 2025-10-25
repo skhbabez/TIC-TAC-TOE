@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import NewGame from "./layouts/NewGame/NewGame";
 import ActiveGame from "./layouts/ActiveGame/ActiveGame";
 import Dialog from "./components/Dialog/Dialog";
@@ -9,10 +9,10 @@ import clsx from "clsx";
 
 export type Marker = "x" | "o";
 
-export interface Tile {
-  id: number;
-  marker: Marker | null;
-}
+// export interface Tile {
+//   id: number;
+//   marker: Marker | null;
+// }
 export interface Score {
   playerX: number;
   ties: number;
@@ -25,7 +25,7 @@ interface GameState {
   round: number;
   marker: Marker;
   vsCpu: boolean;
-  tiles: Tile[];
+  tiles: (Marker | null)[];
   turn: Marker;
   score: Score;
 }
@@ -42,7 +42,7 @@ interface MarkerAction {
 
 interface TickAction {
   type: "TICK";
-  id: number;
+  idx: number;
 }
 
 interface RestartAction {
@@ -66,7 +66,7 @@ type GameAction =
   | NextRoundAction;
 
 const createTiles = () => {
-  return Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null }));
+  return Array.from({ length: 9 }, () => null);
 };
 
 const defaultGameState: GameState = {
@@ -84,48 +84,40 @@ const defaultGameState: GameState = {
   },
 };
 
-const hasWon = (tiles: Tile[]) => {
+const hasWon = (tiles: (Marker | null)[]) => {
   for (let i = 0; i < 3; i++) {
     // columns
     if (
-      tiles[i].marker &&
-      tiles[i].marker === tiles[i + 3].marker &&
-      tiles[i + 3].marker === tiles[i + 6].marker
+      tiles[i] &&
+      tiles[i] === tiles[i + 3] &&
+      tiles[i + 3] === tiles[i + 6]
     ) {
       console.log("test");
 
-      return tiles[i].marker;
+      return tiles[i];
     }
 
     // rows
     if (
-      tiles[i * 3].marker &&
-      tiles[i * 3].marker === tiles[i * 3 + 1].marker &&
-      tiles[i * 3 + 1].marker === tiles[i * 3 + 2].marker
+      tiles[i * 3] &&
+      tiles[i * 3] === tiles[i * 3 + 1] &&
+      tiles[i * 3 + 1] === tiles[i * 3 + 2]
     ) {
-      return tiles[i * 3].marker;
+      return tiles[i * 3];
     }
   }
 
   // diagonal
-  if (
-    tiles[0].marker &&
-    tiles[0].marker === tiles[4].marker &&
-    tiles[4].marker === tiles[8].marker
-  ) {
-    return tiles[4].marker;
+  if (tiles[0] && tiles[0] === tiles[4] && tiles[4] === tiles[8]) {
+    return tiles[4];
   }
 
-  if (
-    tiles[2].marker &&
-    tiles[2].marker === tiles[4].marker &&
-    tiles[4].marker === tiles[6].marker
-  ) {
-    return tiles[4].marker;
+  if (tiles[2] && tiles[2] === tiles[4] && tiles[4] === tiles[6]) {
+    return tiles[4];
   }
 
   // tie
-  if (tiles.filter((tile) => !tile.marker).length === 0) {
+  if (tiles.filter((tile) => !tile).length === 0) {
     return "tie";
   }
   // undecided
@@ -146,18 +138,19 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
         marker: action.marker,
       };
     case "TICK": {
-      const tickedId = action.id;
-      const idx = gameState.tiles.findIndex(({ id }) => id === tickedId);
+      // check if we alreday selected the tile
+      const idx = action.idx;
       const tile = gameState.tiles[idx];
-      if (tile.marker !== null) {
+      if (tile !== null) {
         return gameState;
       }
-      const tiles = gameState.tiles.map((tile) => ({ ...tile }));
+      const tiles = [...gameState.tiles];
       const turn = gameState.turn === "x" ? "o" : "x";
-      tiles[idx].marker = gameState.turn;
+      tiles[idx] = gameState.turn;
+      const result = hasWon(tiles);
       return {
         ...gameState,
-        result: hasWon(tiles),
+        result: result,
         tiles,
         turn,
       };
@@ -218,9 +211,26 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
   }
 };
 
+const cpuTurn = (tiles: (Marker | null)[]) => {
+  const emptyIdx = tiles
+    .map((marker, idx) => (!marker ? idx : -1))
+    .filter((idx) => idx >= 0);
+  const choice = Math.floor(Math.random() * emptyIdx.length);
+  return emptyIdx[choice];
+};
+
 function App() {
   const [gameState, dispatch] = useReducer(reducer, defaultGameState);
   const [showRestart, setShowRestart] = useState(false);
+
+  useEffect(() => {
+    if (gameState.vsCpu && gameState.status === "running") {
+      const cpuMarker = gameState.marker === "x" ? "o" : "x";
+      if (gameState.turn === cpuMarker) {
+        dispatch({ type: "TICK", idx: cpuTurn(gameState.tiles) });
+      }
+    }
+  }, [gameState]);
 
   const dialogText = () => {
     if (gameState.vsCpu) {
@@ -255,7 +265,7 @@ function App() {
           tiles={gameState.tiles}
           turn={gameState.turn}
           score={gameState.score}
-          onTick={(id) => dispatch({ type: "TICK", id })}
+          onTick={(idx) => dispatch({ type: "TICK", idx })}
           onRestart={() => {
             setShowRestart(true);
           }}

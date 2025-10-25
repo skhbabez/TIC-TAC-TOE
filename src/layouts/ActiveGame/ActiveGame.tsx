@@ -4,12 +4,12 @@ import X from "../../components/icons/X";
 import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
-import type { Marker, Score, Tile } from "../../App";
+import type { Marker, Score } from "../../App";
 
 interface ActiveGameProps {
   marker: Marker;
   vsCpu: boolean;
-  tiles: Tile[];
+  tiles: (Marker | null)[];
   turn: Marker;
   score: Score;
   onTick: (id: number) => void;
@@ -63,8 +63,8 @@ const ActiveGame = ({
         </Button>
       </header>
       <div className="grid grid-cols-3 gap-5 pt-16 md:pt-[1.1875rem]">
-        {tiles.map(({ id, marker }) => (
-          <GameTile key={id} marker={marker} onTick={() => onTick(id)} />
+        {tiles.map((marker, idx) => (
+          <GameTile key={idx} marker={marker} onTick={() => onTick(idx)} />
         ))}
       </div>
       <footer className="grid grid-flow-col auto-cols-fr gap-5 pt-5 md:pt-[1.1875rem]">
