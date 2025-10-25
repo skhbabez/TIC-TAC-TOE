@@ -43,6 +43,7 @@ interface MarkerAction {
 interface TickAction {
   type: "TICK";
   idx: number;
+  isHuman: boolean;
 }
 
 interface RestartAction {
@@ -138,12 +139,20 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
         marker: action.marker,
       };
     case "TICK": {
-      // check if we alreday selected the tile
+      if (
+        gameState.vsCpu &&
+        gameState.turn !== gameState.marker &&
+        action.isHuman
+      ) {
+        return gameState;
+      }
+
       const idx = action.idx;
       const tile = gameState.tiles[idx];
       if (tile !== null) {
         return gameState;
       }
+
       const tiles = [...gameState.tiles];
       const turn = gameState.turn === "x" ? "o" : "x";
       tiles[idx] = gameState.turn;
@@ -236,10 +245,23 @@ function App() {
   const [showRestart, setShowRestart] = useState(false);
 
   useEffect(() => {
-    if (gameState.vsCpu && gameState.status === "running") {
+    if (
+      gameState.vsCpu &&
+      gameState.status === "running" &&
+      !gameState.result
+    ) {
       const cpuMarker = gameState.marker === "x" ? "o" : "x";
       if (gameState.turn === cpuMarker) {
-        dispatch({ type: "TICK", idx: cpuTurn(gameState.tiles) });
+        const timer = setTimeout(
+          () =>
+            dispatch({
+              type: "TICK",
+              idx: cpuTurn(gameState.tiles),
+              isHuman: false,
+            }),
+          gameState.tiles.filter((marker) => marker).length === 0 ? 200 : 800
+        );
+        return () => clearTimeout(timer);
       }
     }
   }, [gameState]);
@@ -281,7 +303,7 @@ function App() {
           tiles={gameState.tiles}
           turn={gameState.turn}
           score={gameState.score}
-          onTick={(idx) => dispatch({ type: "TICK", idx })}
+          onTick={(idx) => dispatch({ type: "TICK", idx, isHuman: true })}
           onRestart={() => {
             setShowRestart(true);
           }}
