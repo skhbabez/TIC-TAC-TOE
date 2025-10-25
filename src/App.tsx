@@ -9,10 +9,6 @@ import clsx from "clsx";
 
 export type Marker = "x" | "o";
 
-// export interface Tile {
-//   id: number;
-//   marker: Marker | null;
-// }
 export interface Score {
   playerX: number;
   ties: number;
@@ -87,7 +83,6 @@ const defaultGameState: GameState = {
 
 const hasWon = (tiles: (Marker | null)[]) => {
   for (let i = 0; i < 3; i++) {
-    // columns
     if (
       tiles[i] &&
       tiles[i] === tiles[i + 3] &&
@@ -98,7 +93,6 @@ const hasWon = (tiles: (Marker | null)[]) => {
       return tiles[i];
     }
 
-    // rows
     if (
       tiles[i * 3] &&
       tiles[i * 3] === tiles[i * 3 + 1] &&
@@ -108,7 +102,6 @@ const hasWon = (tiles: (Marker | null)[]) => {
     }
   }
 
-  // diagonal
   if (tiles[0] && tiles[0] === tiles[4] && tiles[4] === tiles[8]) {
     return tiles[4];
   }
@@ -117,11 +110,10 @@ const hasWon = (tiles: (Marker | null)[]) => {
     return tiles[4];
   }
 
-  // tie
   if (tiles.filter((tile) => !tile).length === 0) {
     return "tie";
   }
-  // undecided
+
   return null;
 };
 
