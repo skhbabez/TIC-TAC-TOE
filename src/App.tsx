@@ -6,25 +6,9 @@ import Button from "./components/Button/Button";
 import X from "./components/icons/X";
 import O from "./components/icons/O";
 import clsx from "clsx";
-
-export type Marker = "x" | "o";
-
-export interface Score {
-  playerX: number;
-  ties: number;
-  playerO: number;
-}
-
-interface GameState {
-  status: "running" | "idle";
-  result: "x" | "o" | "tie" | null;
-  round: number;
-  marker: Marker;
-  vsCpu: boolean;
-  tiles: (Marker | null)[];
-  turn: Marker;
-  score: Score;
-}
+import type { GameState, Marker } from "./game/types";
+import { createTiles } from "./game/utils";
+import { cpuTurn, hasWon } from "./game/turn";
 
 interface StartAction {
   type: "START";
@@ -62,10 +46,6 @@ type GameAction =
   | QuitAction
   | NextRoundAction;
 
-const createTiles = () => {
-  return Array.from({ length: 9 }, () => null);
-};
-
 const defaultGameState: GameState = {
   status: "idle",
   result: null,
@@ -79,42 +59,6 @@ const defaultGameState: GameState = {
     ties: 0,
     playerO: 0,
   },
-};
-
-const hasWon = (tiles: (Marker | null)[]) => {
-  for (let i = 0; i < 3; i++) {
-    if (
-      tiles[i] &&
-      tiles[i] === tiles[i + 3] &&
-      tiles[i + 3] === tiles[i + 6]
-    ) {
-      console.log("test");
-
-      return tiles[i];
-    }
-
-    if (
-      tiles[i * 3] &&
-      tiles[i * 3] === tiles[i * 3 + 1] &&
-      tiles[i * 3 + 1] === tiles[i * 3 + 2]
-    ) {
-      return tiles[i * 3];
-    }
-  }
-
-  if (tiles[0] && tiles[0] === tiles[4] && tiles[4] === tiles[8]) {
-    return tiles[4];
-  }
-
-  if (tiles[2] && tiles[2] === tiles[4] && tiles[4] === tiles[6]) {
-    return tiles[4];
-  }
-
-  if (tiles.filter((tile) => !tile).length === 0) {
-    return "tie";
-  }
-
-  return null;
 };
 
 const reducer = (gameState: GameState, action: GameAction): GameState => {
@@ -212,14 +156,6 @@ const reducer = (gameState: GameState, action: GameAction): GameState => {
   }
 };
 
-const cpuTurn = (tiles: (Marker | null)[]) => {
-  const emptyIdx = tiles
-    .map((marker, idx) => (!marker ? idx : -1))
-    .filter((idx) => idx >= 0);
-  const choice = Math.floor(Math.random() * emptyIdx.length);
-  return emptyIdx[choice];
-};
-
 const save = (state: GameState) => {
   return window.localStorage.setItem("gamestate", JSON.stringify(state));
 };
@@ -248,7 +184,7 @@ function App() {
           () =>
             dispatch({
               type: "TICK",
-              idx: cpuTurn(gameState.tiles),
+              idx: cpuTurn(gameState.tiles, cpuMarker),
               isHuman: false,
             }),
           gameState.tiles.filter((marker) => marker).length === 0 ? 200 : 800

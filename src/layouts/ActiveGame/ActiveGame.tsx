@@ -4,12 +4,12 @@ import X from "../../components/icons/X";
 import clsx from "clsx";
 import OutlineX from "../../components/icons/XOutline";
 import OutlineO from "../../components/icons/OutlineO";
-import type { Marker, Score } from "../../App";
+import type { BoardState, Marker, Score } from "../../game/types";
 
 interface ActiveGameProps {
   marker: Marker;
   vsCpu: boolean;
-  tiles: (Marker | null)[];
+  tiles: BoardState;
   turn: Marker;
   score: Score;
   onTick: (id: number) => void;
@@ -94,8 +94,8 @@ const GameTile = ({
   const symbols = {
     x: (
       <>
-        <X className="w-full aspect-square text-light-blue group-hover:hidden" />
-        <OutlineX className="w-full aspect-square text-light-blue hidden group-hover:block" />
+        <X className="w-full aspect-square max-w-16 text-light-blue group-hover:hidden" />
+        <OutlineX className="w-full aspect-square max-w-16 text-light-blue hidden group-hover:block" />
       </>
     ),
     o: (
@@ -108,7 +108,7 @@ const GameTile = ({
   return (
     <button
       onClick={onTick}
-      className="grid place-items-center rounded-l group bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square px-7 pt-6 pb-8 md:px-[2.375rem] md:py-[2.375rem] md:pb-[2.875rem] "
+      className="grid place-items-center rounded-l group bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square pb-2 px-7 "
     >
       {marker && symbols[marker]}
     </button>
