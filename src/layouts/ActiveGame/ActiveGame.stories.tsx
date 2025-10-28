@@ -21,7 +21,7 @@ export const Default: Story = {
   args: {
     marker: "x",
     vsCpu: true,
-    tiles: Array.from({ length: 9 }, (_, i) => ({ id: i, marker: null })),
+    tiles: Array.from({ length: 9 }, () => null),
     turn: "x",
     score: {
       playerX: 0,

@@ -2,7 +2,7 @@ import { useId } from "react";
 import Button from "../../components/Button/Button";
 import X from "../../components/icons/X";
 import O from "../../components/icons/O";
-import type { Marker } from "../../App";
+import type { Marker } from "../../game/types";
 
 interface NewGameProps {
   marker: Marker;
