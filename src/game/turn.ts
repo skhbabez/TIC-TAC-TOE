@@ -45,13 +45,14 @@ const minimax = (
   const minPlayer = maxPlayer === "x" ? "o" : "x";
   const nextPlayer = curPlayer === "x" ? "o" : "x";
   if (result === maxPlayer) {
-    return 10 - depth;
+    // return 10 - depth;
+    return 10;
   } else if (result === minPlayer) {
     return -10;
   } else if (result === "tie") {
     return 0;
   }
-  depth += 1;
+  // depth += 1;
   const emptyTiles = getEmptyTiles(tiles);
   if (curPlayer === maxPlayer) {
     let max = -Infinity;
@@ -92,6 +93,7 @@ export const cpuTurn = (tiles: BoardState, curPlayer: Marker) => {
     newTiles[idx] = curPlayer;
     results[idx] = minimax(curPlayer, nextPlayer, newTiles);
   }
+
   const max = Math.max(...results);
   const indices = results
     .map((result, idx) => (result === max ? idx : -1))
