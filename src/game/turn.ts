@@ -45,14 +45,12 @@ const minimax = (
   const minPlayer = maxPlayer === "x" ? "o" : "x";
   const nextPlayer = curPlayer === "x" ? "o" : "x";
   if (result === maxPlayer) {
-    // return 10 - depth;
-    return 10;
+    return 10 - depth;
   } else if (result === minPlayer) {
     return -10;
   } else if (result === "tie") {
     return 0;
   }
-  // depth += 1;
   const emptyTiles = getEmptyTiles(tiles);
   if (curPlayer === maxPlayer) {
     let max = -Infinity;
@@ -60,7 +58,10 @@ const minimax = (
       if (tiles[idx] === null) {
         const newTiles = [...tiles];
         newTiles[idx] = curPlayer;
-        max = Math.max(minimax(maxPlayer, nextPlayer, newTiles), max, depth);
+        max = Math.max(
+          minimax(maxPlayer, nextPlayer, newTiles, depth + 1),
+          max
+        );
       }
     }
     return max;
@@ -70,7 +71,10 @@ const minimax = (
       if (tiles[idx] === null) {
         const newTiles = [...tiles];
         newTiles[idx] = curPlayer;
-        min = Math.min(minimax(maxPlayer, nextPlayer, newTiles), min, depth);
+        min = Math.min(
+          minimax(maxPlayer, nextPlayer, newTiles, depth + 1),
+          min
+        );
       }
     }
     return min;
