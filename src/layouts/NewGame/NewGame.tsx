@@ -32,24 +32,23 @@ const NewGame = ({ marker, startGame, onMarkerChange }: NewGameProps) => {
           aria-describedby={descId}
         >
           <div className="flex">
-            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] text-center has-checked:bg-silver hover:bg-silver/5 cursor-pointer">
+            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] text-center has-checked:bg-silver hover:bg-silver/5 cursor-pointer has-focus-visible:outline-2 has-focus-visible:outline-light-blue has-focus-visible:z-10">
               <input
-                className="appearance-none absolute peer"
+                className="appearance-none absolute peer outline-none"
                 type="radio"
                 name="markerselect"
-                aria-label="X" /* test this */
+                aria-label="X" 
                 checked={marker === "x"}
                 onChange={() => onMarkerChange("x")}
               />
               <X className="w-8 h-8 text-silver mx-auto peer-checked:text-dark-navy" />
             </label>
-            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] has-checked:bg-silver hover:bg-silver/5 cursor-pointer">
+            <label className="flex-1 bg-dark-navy rounded-m py-[0.6875rem] has-checked:bg-silver hover:bg-silver/5 cursor-pointer has-focus-visible:outline-2 has-focus-visible:outline-light-blue has-focus-visible:z-10">
               <input
-                className="appearance-none absolute peer"
+                className="appearance-none absolute peer outline-none"
                 type="radio"
                 name="markerselect"
-                aria-label="Y"
-                value={"y"}
+                aria-label="O"
                 checked={marker === "o"}
                 onChange={() => onMarkerChange("o")}
               />

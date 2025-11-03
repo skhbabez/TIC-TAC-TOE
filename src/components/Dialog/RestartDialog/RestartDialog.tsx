@@ -19,7 +19,12 @@ const RestartDialog = ({
           restart game?
         </h1>
         <div className="flex gap-4 mt-6 md:mt-[1.9375rem] justify-center">
-          <Button variant="secondary" color="silver" onClick={onCancel}>
+          <Button
+            variant="secondary"
+            color="silver"
+            onClick={onCancel}
+            autoFocus
+          >
             no, cancel
           </Button>
           <Button onClick={onRestart} variant="secondary" color="yellow">

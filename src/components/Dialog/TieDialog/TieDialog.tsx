@@ -18,7 +18,12 @@ const TieDialog = ({ onQuit, onNextRound, ...props }: TieDialogProps) => {
           <Button variant="secondary" color="silver" onClick={onQuit}>
             quit
           </Button>
-          <Button onClick={onNextRound} variant="secondary" color="yellow">
+          <Button
+            onClick={onNextRound}
+            variant="secondary"
+            color="yellow"
+            autoFocus
+          >
             next round
           </Button>
         </div>
