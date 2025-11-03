@@ -197,7 +197,7 @@ function App() {
   }, [gameState]);
 
   return (
-    <main>
+    <main aria-live="assertive">
       {gameState.status === "idle" ? (
         <NewGame
           marker={gameState.marker}

@@ -109,6 +109,7 @@ const GameTile = ({
     <button
       onClick={onTick}
       className="grid place-items-center rounded-l group bg-semi-dark-navy inset-shadow-l inset-shadow-dark-navy-b w-full aspect-square pb-2 px-7 "
+      aria-pressed={marker != null}
     >
       {marker && symbols[marker]}
     </button>
